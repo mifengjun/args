@@ -4,9 +4,15 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class Args {
+    public static Map<Class<?>, OptionParser> PARSER_MAP = Map.of(
+            boolean.class, new BooleanOptionParser(),
+            int.class, new SingleOptionParser<>(Integer::valueOf),
+            String.class, new SingleOptionParser<>(String::valueOf)
+    );
+
     public static <T> T parse(Class<T> optionsClass, String... args) {
         try {
             List<String> argList = List.of(args);
@@ -22,21 +28,10 @@ public class Args {
         }
     }
 
-    private static Object parseOption(Parameter parameter, List<String> argList) {
+    private static Object parseOption(Parameter parameter, List<String> args) {
         Option annotation = parameter.getAnnotation(Option.class);
         // 传入 true 参数，用构造函数创建对象
-        Object value = null;
-        if (parameter.getType() == boolean.class) {
-            value = argList.contains("-" + annotation.value());
-        }
-        if (parameter.getType() == int.class) {
-            int index = argList.indexOf("-" + annotation.value());
-            value = Integer.valueOf(argList.get(index + 1));
-        }
-        if (parameter.getType() == String.class) {
-            int index = argList.indexOf("-" + annotation.value());
-            value = String.valueOf(argList.get(index + 1));
-        }
-        return value;
+        return PARSER_MAP.get(parameter.getType()).parse(args, annotation);
     }
+
 }
