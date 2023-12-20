@@ -3,6 +3,9 @@ package org.example;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ArgsTest {
@@ -116,8 +119,7 @@ class ArgsTest {
         assertEquals("/usr/logs", parse.directory());
     }
 
-    // Sad Path:
-    // TODO     - Bool: -l f / -l 0
+
     // TODO     - Int: -p 8080.1 / -p abc
     // TODO     - String: -d /usr/logs/ / -d /usr/logs
     // default Value:

@@ -2,6 +2,6 @@ package org.example;
 
 import java.util.List;
 
-public interface OptionParser {
-    Object parse(List<String> args, Option annotation);
+public interface OptionParser<T> {
+    T parse(List<String> args, Option annotation);
 }
