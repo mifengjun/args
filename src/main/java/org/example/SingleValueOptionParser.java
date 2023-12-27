@@ -13,8 +13,10 @@ public class SingleValueOptionParser<T> implements OptionParser<T> {
     @Override
     public T parse(List<String> args, Option annotation) {
         int index = args.indexOf("-" + annotation.value());
-        String value = args.get(index + 1);
-        return parseValue(value);
+        if(index +1 < args.size() && !args.get(index + 1).startsWith("-")) {
+            throw new TooManyArgumentsException(annotation.value());
+        }
+        return parseValue(args.get(index + 1));
     }
 
     public T parseValue(String value) {

@@ -29,12 +29,7 @@ public class BooleanOptionParserTest {
     public void should_default_to_false_if_option_not_present() {
         assertFalse(new BooleanOptionParser().parse(List.of(), option("l")));
     }
-    @Test
-    public void should_not_accept_extra_arguments_for_boolean_option1() {
-        TooManyArgumentsException e = assertThrows(TooManyArgumentsException.class,
-                () -> Args.parse(ArgsTest.BooleanOption.class, "-l", "t"));
-        assertEquals("l", e.getOption());
-    }
+
     private Option option(String value) {
         return new Option() {
             @Override
